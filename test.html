@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<script src="js/oijq.js"></script>
+<script>
+  'use strict'
+
+  function correctIndexes (fields) {
+    let newFields = {}
+    let indexes   = []
+
+    // перебор элементов формы
+    for (let i in fields) {
+      // поиск по маске в имени элемента формы
+      let matches = fields[i].matchAll(/(\w+)\[(.*?)\]/g)
+      // новое имя поля
+      let name    = ''
+      // ключ элемента для которого создается индекс:  <ключ>[<индекс>]
+      let key     = ''
+      // перебор найденного
+      for (const match of matches) {
+        // формируется уникальный ключ, например если имя элемента part1[]part2[], то ключ будет part1part2
+        key += match[1]
+        // если индекс еще не усттановлен
+        if (!indexes[key] && 0 !== indexes[key]) {
+          // определяется значение первого индекса для указанного ключа
+          indexes[key] = 0
+        } else {
+          // увеличиваем значение ключа
+          indexes[key]++
+        }
+        let index
+        // если индкс/ключ в скобках не указан
+        if ('' === match[2]) {
+          index = indexes[key]
+        } else {
+          // если индекс уже определен, то вписываем это значение
+          index = match[2]
+        }
+        // новое имя состоит из имени переменной и созданного индекса
+        name += match[1] + '[' + index + ']'
+
+        key += index
+      }
+
+      // присваиваем новое имя с указанными индексами
+      newFields[name] = fields[i]
+    }
+
+    // console.log('-')
+    return newFields
+  }
+
+  const data = {
+    // { name: 'field[]', value: 'field 1' },
+    // { name: 'field[]', value: 'field 2' },
+    // { name: 'field[]', value: 'field 3' },
+    // { name: 'field[]', value: 'field 4' },
+    // { name: 'field[]', value: 'field 5' },
+    // { name: 'input[]field[]opt[23]', value: 'third' },
+    // { name: 'input[]field[]opt[35]', value: 'first' },
+    // { name: 'input[]opt[7]', value: 'second' },
+      'first[]second[]': 'one' ,
+      'first[]second[]': 'two' ,
+     'first[]second[]': 'two',
+    }
+
+  console.log('data', data)
+
+  let data2 = correctIndexes(data)
+  console.log('new data', data2)
+</script>
+</body>
+</html>

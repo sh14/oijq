@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			font-size: 18px;
+		}
+
+		.form {
+			width: 500px;
+			margin: auto;
+		}
+
+		.form__group {
+			margin: 0 0 10px 0;
+		}
+
+		.form__control {
+			width: 100%;
+			box-sizing: border-box;
+			font-size: 1em;
+			padding: 10px;
+		}
+
+		.form__control[type=checkbox] {
+			width: auto;
+		}
+
+		.form__button {
+			padding: 10px;
+			box-sizing: border-box;
+			font-size: 1em;
+		}
+	</style>
+</head>
+<body>
+<!-- http://forms.local/oijq/ -->
+
+<form action="server.php" class="form" method="post">
+	<div class="form__group"><input class="form__control" type="text" name="name" value="John"></div>
+	<div class="form__group"><input class="form__control" type="number" name="age" value="23"></div>
+	<div class="form__group"><input class="form__control" type="number" name="drink" step="0.01" value="10"></div>
+	<div class="form__group"><input class="form__control" type="text" name="field[][opt][4]" value="field 1"></div>
+	<div class="form__group"><input class="form__control" type="text" name="field[][opt][3]" value="field 2"></div>
+	<div class="form__group"><input class="form__control" type="text" name="field[3][opt][7]" value="field 3"></div>
+	<div class="form__group"><input class="form__control" type="text" name="field[][opt][66]" value="field 4"></div>
+	<div class="form__group"><input class="form__control" type="text" name="field[][opt][51]" value="field 5"></div>
+	<div class="form__group"><label for=""><input class="form__control" type="checkbox" checked>Flag</label></div>
+	<div class="form__group"><select class="form__control" name="choice" id="">
+		<option value="1">Option 1</option>
+		<option value="2" selected>Option 2</option>
+		<option value="3">Option 3</option>
+	</select></div>
+	<button class="form__button" type="submit">Submit</button>
+</form>
+
+<script src="js/oijq.js"></script>
+<script>
+
+  document.querySelector('[type=submit]').addEventListener('click', (event) => {
+    event.preventDefault()
+    let form = event.target.closest('form')
+    let data = form.serialize()
+    console.log('data', data)
+
+    let method = form.getAttribute('method') ? form.getAttribute('method') : 'post'
+    console.log('method', method)
+    request({
+      method: method,
+      url: 'server.php',
+      data: data
+    })
+      .then(function (result) {
+        // console.log('result', result)
+        if (result) {
+          let answer = JSON.parse(result)
+          console.log('answer', answer)
+        }
+      })
+      .catch(function (err) {
+        if (err.hasOwnProperty('statusText')) {
+          console.error('There was an error!', err.statusText)
+        } else {
+          console.error(err)
+        }
+      })
+
+  })
+</script>
+</body>
+</html>
