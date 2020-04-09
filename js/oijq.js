@@ -125,20 +125,20 @@ function scrollTo (el) {
 /**
  * Add event listner
  *
- * @param e
+ * @param event
  * @param selector
- * @param func
+ * @param callback
  */
-function on (e, selector, func) {
-  e = e.split(' ')
-  // cl( e );
-  for (let i = 0, count = e.length; i < count; i++) {
-    document.addEventListener(e[i], function (event) {
-      let element = event.target
+function on (event, selector, callback) {
+  event = event.split(' ')
+  // cl( event );
+  for (let i = 0, count = event.length; i < count; i++) {
+    document.addEventListener(event[i], function (e) {
+      let element = e.target
       // if the element or the closest one was involved
       if (element.closest(selector)) {
-        // pass variables to function
-        func(event, selector)
+        // pass variables to callback function
+        callback(e, selector)
       }
     })
   }
