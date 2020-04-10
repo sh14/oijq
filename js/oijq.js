@@ -689,47 +689,27 @@ function parseAttributes (attributes, defaults) {
 }
 
 /**
- * Добавление интервью-блока
+ * Adding content block
  *
- * @param after
- * @param data
+ * @param templateId - string
+ * @param element - Element object
+ * @param data - Data object
  */
-function addBlock (atts) {
-  atts = parseAttributes(atts, {
-    data: {}, // values of keys in the template
-    templateId: null, // script tag template id
-    fields: [], // list of fields names
-    after: null, // indicate after which element we should add the block
-    formSelector: null, // indicates to which form we should add the block
-  })
+function addBlock (templateId, element, data) {
+  let template = document.getElementById(templateId)
 
-  if (!atts.templateId) return
-  
-  let template = document.getElementById(atts.templateId).innerHTML
-  if (!template) return
-  template     = htmlToNode(tmpl(template, atts.data))
-  if (!template) return
+  // if there is no template or element then exit
+  if (!template || !element) return
 
-  if (atts.fields) {
-    for (const name of atts.fields) {
-      template.querySelectorAll('[data-name="' + name + '"]').forEach(() => {
-        this.value = atts.data[name] || ''
-      })
-    }
-  }
+  // convert HTML to DOM node
+  template = htmlToNode(tmpl(template.innerHTML, data))
 
-  // если элемент не указан
-  if (!atts.after) {
-    if (!atts.formSelector) return
-    // get form element
-    atts.after = document.querySelector(atts.formSelector)
-    // append template
-    atts.after.appendChild(template)
-  } else {
+  // insert new block after the element
+  element.parentNode.insertBefore(template, element.nextSibling)
 
-    // add template after an element
-    atts.after.parentNode.insertBefore(template, atts.after.nextSibling)
-  }
+  // scroll to new block
+  scrollCloseTo(template)
+}
 
   scrollTo(template)
 }
