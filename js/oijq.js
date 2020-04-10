@@ -711,8 +711,26 @@ function addBlock (templateId, element, data) {
   scrollCloseTo(template)
 }
 
-  scrollTo(template)
+/**
+ * Reindexing all content blocks
+ *
+ * @param blocksSelector - selector of block that contains dynamic fields
+ */
+function indexDynamicFields (blocksSelector) {
+  // select all blocks
+  let blocks = document.querySelectorAll(blocksSelector)
+  // loop blocks
+  blocks.forEach((el, index) => {
+    // search for dynamic fields in current block
+    el.querySelectorAll('[data-name]').forEach((field, j) => {
+      const name = field.getAttribute('data-name')
+      // set attributes for current field
+      field.setAttribute('id', name + '-' + index)
+      field.setAttribute('name', name + '[' + index + ']')
+    })
+  })
 }
+
 
 /**
  * список состояний элемента
