@@ -115,10 +115,10 @@ function setUrl (data, url) {
 /**
  * Scroll to a given element
  *
- * @param el
+ * @param element
  */
-function scrollTo (el) {
-  let y = el.offsetTop + el.offsetHeight
+function scrollCloseTo (element) {
+  let y = element.offsetTop /*- element.offsetHeight*/
   window.scrollTo(0, y)
 }
 
