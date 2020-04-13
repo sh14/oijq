@@ -447,6 +447,40 @@ Object.defineProperty(Object.prototype, 'serialize', {
 })
 
 /**
+ * Set or unset class to the element
+ * Example:
+ * <div class="element"></div>
+ * <script>
+ * document.querySelector('.element').toggleClass('active',true)
+ * </script>
+ *
+ * It will be:
+ * <div class="element element_active"></div>
+ */
+Object.defineProperty(Object.prototype, 'toggleClass', {
+  value: function (className, set) {
+    let classesOld = this.classList.value.split(' ')
+    classesOld     = classesOld.map((item) => {
+      if (className === item) {
+        return ''
+      }
+      return item.replace('_' + className)
+    })
+
+    let classes = []
+    if (set) {
+      for (let item of this.classList) {
+        classes.push(item + '_' + className)
+      }
+      classes.push(className)
+    }
+    classes = [...classesOld, ...classes].join(' ')
+    this.setAttribute('class', classes)
+  },
+  enumerable: false
+})
+
+/**
  * Get request.
  *
  * @param options
@@ -568,8 +602,6 @@ function formToCookie (name, form, options) {
   data     = JSON.stringify(data)
   setCookie(name, data, options)
 }
-
-
 
 // https://stackoverflow.com/questions/17528749/semaphore-like-queue-in-javascript/17528961#17528961
 /*  let Queue = (function () {
@@ -730,7 +762,6 @@ function indexDynamicFields (blocksSelector) {
     })
   })
 }
-
 
 /**
  * список состояний элемента
