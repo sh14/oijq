@@ -459,21 +459,24 @@ Object.defineProperty(Object.prototype, 'serialize', {
 Object.defineProperty(Object.prototype, 'toggleClass', {
   value: function (className, set) {
     let classesOld = this.classList.value.split(' ')
-    classesOld     = classesOld.map((item) => {
+    classesOld  = classesOld.map((item) => {
       if (className === item) {
         return ''
       }
-      return item.replace('_' + className)
+      return item.replace('_' + className, '')
     })
-
     let classes = []
-    if (set) {
-      for (let item of this.classList) {
-        classes.push(item + '_' + className)
+    if (true === set) {
+      for (let item of classesOld) {
+        if (item) {
+          classes.push(item + '_' + className)
+        }
       }
       classes.push(className)
     }
-    classes = [...classesOld, ...classes].join(' ')
+    classes = [...classesOld, ...classes].filter((value, index, self) => {
+      return self.indexOf(value) === index
+    }).join(' ')
     this.setAttribute('class', classes)
   },
   enumerable: false
