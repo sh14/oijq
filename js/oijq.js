@@ -139,7 +139,7 @@ function on (event, selector, callback) {
         // pass variables to callback function
         callback(e, selector)
       }
-    })
+    }, true)
   }
 }
 
