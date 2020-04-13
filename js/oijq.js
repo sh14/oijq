@@ -131,7 +131,6 @@ function scrollCloseTo (element) {
  */
 function on (event, selector, callback) {
   event = event.split(' ')
-  // cl( event );
   for (let i = 0, count = event.length; i < count; i++) {
     document.addEventListener(event[i], function (e) {
       let element = e.target
