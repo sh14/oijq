@@ -15,21 +15,11 @@ function cl (data, clear) {
  * @returns {boolean}
  */
 function resizeTextarea (textarea) {
-
-  // 2 пикселя верхнего и нижнего бордеров, чтоб избавиться от скрола
-  let gitter = 2
-
   if ('textarea' !== textarea.tagName.toLowerCase()) {
     return false
   }
-
-  /*
-    gitter = parseInt(window.getComputedStyle(textarea, null).getPropertyValue('padding-top')) +
-      parseInt(window.getComputedStyle(textarea, null).getPropertyValue('padding-bottom'))
-  */
-
-  textarea.style.height = 'auto'
-  textarea.style.height = (textarea.scrollHeight + gitter) + 'px'
+  textarea.style.height = 0
+  textarea.style.height = textarea.scrollHeight + 'px'
 }
 
 function confirmExit () {
