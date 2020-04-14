@@ -718,24 +718,39 @@ function parseAttributes (attributes, defaults) {
 /**
  * Adding content block
  *
- * @param templateId - string
- * @param element - Element object
- * @param data - Data object
+ * @param data
  */
-function addBlock (templateId, element, data) {
-  let template = document.getElementById(templateId)
+function addBlock (data) {
+  data         = parseAttributes(data, {
+    templateId: '', // id ot HTML template
+    element: null, // the element after which the block will be inserted
+    data: {}, // template data object
+    focusOn: '', // selector of an element that should be focused
+    scrollOffset: 0, // Offset relative to element position
+    scroll: true, // true if have to scroll to the element
+  })
+  let template = document.getElementById(data.templateId)
 
   // if there is no template or element then exit
-  if (!template || !element) return
+  if (!template || !data.element) return
 
   // convert HTML to DOM node
-  template = htmlToNode(tmpl(template.innerHTML, data))
+  template = htmlToNode(tmpl(template.innerHTML, data.data))
 
   // insert new block after the element
-  element.parentNode.insertBefore(template, element.nextSibling)
+  data.element.parentNode.insertBefore(template, data.element.nextSibling)
 
-  // scroll to new block
-  scrollCloseTo(template)
+  // if focusOn is not empty
+  if (data.focusOn) {
+    // set focus on the pointed element
+    data.element.nextElementSibling.querySelector(data.focusOn).focus()
+  }
+
+  // if we have to scroll
+  if (true === data.scroll) {
+    // scroll to new block
+    scrollCloseTo(template, data.scrollOffset)
+  }
 }
 
 /**
