@@ -106,6 +106,7 @@ function setUrl (data, url) {
  * Scroll to a given element
  *
  * @param element
+ * @param scrollOffset
  */
 function scrollCloseTo (element, scrollOffset) {
   if (!scrollOffset) {
