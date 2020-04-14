@@ -452,13 +452,13 @@ Object.defineProperty(Object.prototype, 'serialize', {
 Object.defineProperty(Object.prototype, 'toggleClass', {
   value: function (className, set) {
     let classesOld = this.classList.value.split(' ')
-    classesOld  = classesOld.map((item) => {
+    classesOld     = classesOld.map((item) => {
       if (className === item) {
         return ''
       }
       return item.replace('_' + className, '')
     })
-    let classes = []
+    let classes    = []
     if (true === set) {
       for (let item of classesOld) {
         if (item) {
@@ -599,48 +599,49 @@ function formToCookie (name, form, options) {
 }
 
 // https://stackoverflow.com/questions/17528749/semaphore-like-queue-in-javascript/17528961#17528961
-/*  let Queue = (function () {
+class Queue {
+  constructor (autorun = true, queue = []) {
+    this.running = false
+    this.autorun = autorun
+    this.queue   = queue
+  }
 
-    function Queue () {
-    }
+  add (cb) {
+    this.queue.push((value) => {
+      const finished = new Promise((resolve, reject) => {
+        const callbackResponse = cb(value)
 
-    Queue.prototype.running = false
-
-    Queue.prototype.queue = []
-
-    Queue.prototype.add_function = function (callback) {
-      let _this = this
-      //add callback to the queue
-      this.queue.push(function () {
-        let finished = callback()
-        if (typeof finished === 'undefined' || finished) {
-          //  if callback returns `false`, then you have to
-          //  call `next` somewhere in the callback
-          _this.next()
+        if (callbackResponse !== false) {
+          resolve(callbackResponse)
+        } else {
+          reject(callbackResponse)
         }
       })
 
-      if (!this.running) {
-        // if nothing is running, then start the engines!
-        this.next()
-      }
+      finished.then(this.dequeue.bind(this), (() => {}))
+    })
 
-      return this // for chaining fun!
+    if (this.autorun && !this.running) {
+      this.dequeue()
     }
 
-    Queue.prototype.next = function () {
-      this.running = false
-      //get the first element off the queue
-      let shift    = this.queue.shift()
-      if (shift) {
-        this.running = true
-        shift()
-      }
+    return this
+  }
+
+  dequeue (value) {
+    this.running = this.queue.shift()
+
+    if (this.running) {
+      this.running(value)
     }
 
-    return Queue
+    return this.running
+  }
 
-  })()*/
+  get next () {
+    return this.dequeue
+  }
+}
 
 /*
  /!**
