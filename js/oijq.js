@@ -107,8 +107,11 @@ function setUrl (data, url) {
  *
  * @param element
  */
-function scrollCloseTo (element) {
-  let y = element.offsetTop /*- element.offsetHeight*/
+function scrollCloseTo (element, scrollOffset) {
+  if (!scrollOffset) {
+    scrollOffset = 0
+  }
+  let y = element.offsetTop + scrollOffset
   window.scrollTo(0, y)
 }
 
