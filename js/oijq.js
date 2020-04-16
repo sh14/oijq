@@ -430,9 +430,9 @@ Object.defineProperty(Object.prototype, 'toggleClass', {
   value: function (className, set) {
     let classesOld = this.classList.value.split(' ')
     classesOld     = classesOld.map((item) => {
-      if (className === item) {
-        return ''
-      }
+      item = item.trim()
+      if (className === item) return ''
+
       return item.replace('_' + className, '')
     })
     let classes    = []
