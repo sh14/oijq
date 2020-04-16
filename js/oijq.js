@@ -197,31 +197,22 @@ function countText (formSelector, fieldsSelector, containerClass) {
       letters: 0,
       words: 0,
     }
-    let blocks = form.querySelectorAll('.js-count-text-block')
-
-    blocks.forEach(function (block) {
-
-      if (undefined === event) {
-        // изменение размера текущего перебираемого блока
-        resizeTextarea(block)
-      }
-
-      count.length += block.value.length
-      let words = block.value.match(/[a-zA-Zа-яА-Я0-9]*/g).filter(word => word.length > 0)
-      // cl( words );
+    fields.forEach((field, index) => {
+      resizeTextarea(field)
+      const length = field.value.length
+      field.setAttribute('data-length', length)
+      count.length += length
+      const words = field.value.match(/[a-zA-Zа-яА-Я0-9]*/g).filter(word => word.length > 0)
       count.letters += words.join('').length
       count.words += words.length
     })
-
-    let words_class = count.words >= 300 ? 'success' : 'warning'
-    form.setAttribute('data-count-text', count.letters)
-    form.querySelector('.js-count-text-output').innerHTML =
-      'S: ' + count.length +
-      ', ' +
-      'L: ' + count.letters +
-      ', ' +
-      'W: <span class="form__text-' + words_class + '">' + count.words + '</span>'
-  })
+    for (const key in count) {
+      const container = form.querySelector(containerClass + '_' + key)
+      if (container) {
+        container.innerHTML = count[key]
+      }
+    }
+  }
 }
 
 /**
