@@ -1,5 +1,4 @@
 'use strict'
-let form_changed = false
 
 function cl (data, clear) {
   if (true === clear) {
@@ -20,13 +19,6 @@ function resizeTextarea (textarea) {
   }
   textarea.style.height = 0
   textarea.style.height = textarea.scrollHeight + 'px'
-}
-
-function confirmExit () {
-  // если форма изменилась
-  if (true === form_changed) {
-    return 'You have attempted to leave this page. Are you sure?'
-  }
 }
 
 /**
@@ -174,11 +166,6 @@ function tmpl (str, data) {
 }
 
 /* -------------------------- */
-
-function setPageStatus (status) {
-  form_changed                                        = status
-  document.querySelector('.js-post-status').innerHTML = status ? '☒︎' : ''
-}
 
 /**
  * Convert HTML to DOM Node
