@@ -221,16 +221,19 @@ function countText (formSelector, fieldsSelector, containerClass) {
  * @param form - element object
  * @returns {boolean}
  */
-function isRequiredOk (form) {
-  let error = true
+function isRequiredEmpty (form) {
+  let error = 0
   form.querySelectorAll('[required]').forEach(function (element) {
 
-    if ('' === element.value) {
-      error = false
-      element.classList.add('error-required')
+    if (!element.value) {
+      error++
+      element.toggleClass('error', true)
+    } else {
+      element.toggleClass('error', false)
     }
   })
-  return error
+
+  return !!error
 }
 
 function stripSlashes (str) {
