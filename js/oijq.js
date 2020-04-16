@@ -461,7 +461,7 @@ Object.defineProperty(Object.prototype, 'toggleClass', {
  * @param options
  * @returns {Promise}
  */
-function request (options) {
+function sendRequest (options) {
   return new Promise(function (resolve, reject) {
     let xhr    = new XMLHttpRequest()
     let params = options.data
@@ -504,7 +504,7 @@ function request (options) {
       } else {
         reject({
           status: this.status,
-          statusText: xhr.statusText
+          statusText: xhr.statusText,
         })
       }
     }
