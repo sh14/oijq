@@ -488,7 +488,6 @@ function sendRequest (options) {
       url = options.url + '?action=' + options.data.action;
     }
   }*/
-
     // if method doesn't set
     if (!options.method) {
       options.method = 'get'
@@ -661,11 +660,11 @@ class Queue {
 
      // toggle element
      if (action === 'hide' || (action === undefined && element.classList.contains('active'))) {
-       element.classList.remove('active')
+       submit.toggleClass('active',false)
        element.removeAttribute('data-selector', selector)
        return
      } else if (action === 'show' || (action === undefined && !element.classList.contains('active'))) {
-       element.classList.add('active')
+       submit.toggleClass('active',true)
      }
    }
    element.setAttribute('data-selector', selector)
@@ -763,36 +762,37 @@ function indexDynamicFields (blocksSelector) {
 function statesList (element, action) {
   switch (action) {
     case 'hide':
-      element.classList.add('hidden-block')
+      element.toggleClass('hidden', true)
       break
     case 'show':
-      element.classList.remove('hidden-block')
+      element.toggleClass('hidden', false)
       break
     case 'active':
-      element.classList.add('active')
+      element.toggleClass('active', true)
       break
-    case 'deactive':
-      element.classList.remove('active')
+    case 'inactive':
+      element.toggleClass('active', false)
       break
     case 'enable':
-      element.classList.remove('disabled')
+      element.toggleClass('disabled', false)
       element.removeAttribute('disabled')
       break
     case 'disable':
-      element.classList.add('disabled')
+      element.toggleClass('disabled', true)
       element.setAttribute('disabled', 'disabled')
       break
     case 'wait':
       // режим ожидания - элемент блокируется и на нем появляется прелоудер
-      element.classList.add('disabled')
+      element.toggleClass('disabled', true)
       element.setAttribute('disabled', 'disabled')
-      element.classList.add('preloader')
+      element.toggleClass('preloader', true)
       break
-    case 'unwait':
-      // разблокировка
-      element.classList.remove('disabled')
+    case 'produce':
+      // unblocking
       element.removeAttribute('disabled')
-      element.classList.remove('preloader')
+      element.toggleClass('preloader', false)
+      // "disabled" moved forward for eleminating an error with unused classes like: "disabled_preloader"
+      element.toggleClass('disabled', false)
       break
   }
 }
