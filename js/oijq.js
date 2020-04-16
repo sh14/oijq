@@ -815,3 +815,26 @@ function setState (element, action) {
   }
 }
 
+/**
+ * Adding message to pointed block for some time
+ * @param selector - block for messages
+ * @param message - message text
+ * @param timeout - time of current message living
+ * @param container - container of one message
+ */
+function echo (selector, message, timeout, container) {
+  if (!container) {
+    container = 'p'
+  }
+  let parent  = document.querySelector(selector)
+  let element = htmlToNode('<' + container + '>' + message + '</' + container + '>')
+  parent.appendChild(element)
+  if (!timeout) {
+    timeout = 5000
+  } else {
+    timeout *= 1000
+  }
+  setTimeout(function () {
+    element.parentNode.removeChild(element)
+  }, timeout)
+}
