@@ -17,7 +17,7 @@ function resizeTextarea (textarea) {
   if ('textarea' !== textarea.tagName.toLowerCase()) {
     return false
   }
-  textarea.style.height = 0
+  textarea.style.height = '0px'
   textarea.style.height = textarea.scrollHeight + 'px'
 }
 
@@ -197,7 +197,7 @@ function countText (formSelector, fieldsSelector, containerClass) {
       letters: 0,
       words: 0,
     }
-    fields.forEach((field, index) => {
+    fields.forEach((field) => {
       resizeTextarea(field)
       const length = field.value.length
       field.setAttribute('data-length', length)
@@ -744,7 +744,7 @@ function indexDynamicFields (blocksSelector) {
   // loop blocks
   blocks.forEach((el, index) => {
     // search for dynamic fields in current block
-    el.querySelectorAll('[data-name]').forEach((field, j) => {
+    el.querySelectorAll('[data-name]').forEach((field) => {
       const name = field.getAttribute('data-name')
       // set attributes for current field
       field.setAttribute('id', name + '-' + index)
