@@ -195,19 +195,17 @@ function htmlToNode (html) {
 }
 
 /**
- * Count number of letters in given element
+ * Count letters and words
  *
- * @param event
+ * @param formSelector
+ * @param fieldsSelector
+ * @param containerClass
  */
-function countText (event) {
-  if (undefined !== event) {
-    // изменение размера редактируемого блока
-    resizeTextarea(event.target)
-  }
-  let forms = document.querySelectorAll('.js-count-text')
-  Array.prototype.slice.call(forms)
-  forms.forEach(function (form) {
-    let count  = {
+function countText (formSelector, fieldsSelector, containerClass) {
+  const form   = document.querySelector(formSelector)
+  const fields = form.querySelectorAll(fieldsSelector)
+  if (fields) {
+    let count = {
       length: 0,
       letters: 0,
       words: 0,
